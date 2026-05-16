@@ -20,20 +20,16 @@ import Settings from './pages/Settings';
 import MCPPlugins from './pages/MCPPlugins';
 import UserManagement from './pages/UserManagement';
 import PromptTemplates from './pages/PromptTemplates';
-import Sponsor from './pages/Sponsor';
 // import Polish from './pages/Polish';
 import Login from './pages/Login';
 import AuthCallback from './pages/AuthCallback';
 import ProtectedRoute from './components/ProtectedRoute';
 import AppFooter from './components/AppFooter';
-import SpringFestival from './components/SpringFestival';
 import './App.css';
 
 function App() {
   return (
     <>
-      {/* 🧧 春节喜庆装饰 */}
-      <SpringFestival />
       <BrowserRouter
         future={{
           v7_startTransition: true,
@@ -41,7 +37,7 @@ function App() {
         }}
       >
         <Routes>
-          <Route path="/login" element={<><Login /><AppFooter /></>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
 
           <Route path="/" element={<ProtectedRoute><><ProjectList /><AppFooter sidebarWidth={220} /></></ProtectedRoute>} />
@@ -54,7 +50,7 @@ function App() {
           <Route path="/user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
           <Route path="/chapters/:chapterId/reader" element={<ProtectedRoute><ChapterReader /></ProtectedRoute>} />
           <Route path="/project/:projectId" element={<ProtectedRoute><ProjectDetail /></ProtectedRoute>}>
-            <Route index element={<Navigate to="sponsor" replace />} />
+            <Route index element={<Navigate to="world-setting" replace />} />
             <Route path="world-setting" element={<WorldSetting />} />
             <Route path="careers" element={<Careers />} />
             <Route path="outline" element={<Outline />} />
@@ -67,7 +63,7 @@ function App() {
             <Route path="foreshadows" element={<Foreshadows />} />
             <Route path="writing-styles" element={<WritingStyles />} />
             <Route path="prompt-workshop" element={<PromptWorkshop />} />
-            <Route path="sponsor" element={<Sponsor />} />
+
             {/* <Route path="polish" element={<Polish />} /> */}
           </Route>
         </Routes>

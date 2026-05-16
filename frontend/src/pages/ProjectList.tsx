@@ -9,7 +9,6 @@ import { eventBus, EventNames } from '../store/eventBus';
 import type { ReactNode } from 'react';
 import type { Project, User } from '../types';
 import UserMenu from '../components/UserMenu';
-import ChangelogFloatingButton from '../components/ChangelogFloatingButton';
 import ThemeSwitch from '../components/ThemeSwitch';
 import { useThemeMode } from '../theme/useThemeMode';
 import SettingsPage from './Settings';
@@ -451,11 +450,6 @@ export default function ProjectList() {
           icon: <MailOutlined />,
           label: '系统设置',
         }] : []),
-        {
-          key: 'mumu-api',
-          icon: <ApiOutlined />,
-          label: 'MuMuのAPI',
-        },
       ],
     },
   ];
@@ -491,11 +485,6 @@ export default function ProjectList() {
       icon: <MailOutlined />,
       label: '系统设置',
     }] : []),
-    {
-      key: 'mumu-api',
-      icon: <ApiOutlined />,
-      label: 'MuMuのAPI',
-    },
   ];
 
   return (
@@ -578,7 +567,7 @@ export default function ProjectList() {
                     overflow: 'hidden',
                     textOverflow: 'ellipsis'
                   }}>
-                    MuMuAINovel
+                    墨笔AI
                   </span>
                 </div>
                 <Button
@@ -604,10 +593,6 @@ export default function ProjectList() {
               selectedKeys={[activeView]}
               style={{ borderRight: 0, paddingTop: 12, width: '100%' }}
               onClick={({ key }) => {
-                if (key === 'mumu-api') {
-                  window.open('https://api.mumuverse.space/register?aff=4NN8', '_blank', 'noopener,noreferrer');
-                  return;
-                }
                 changeView(key as ProjectListView);
               }}
               items={collapsed ? sideMenuItemsCollapsed : sideMenuItems}
@@ -822,7 +807,7 @@ export default function ProjectList() {
               }}>
                 <BookOutlined />
               </div>
-              <span style={{ fontWeight: 600, fontSize: 16, fontFamily: token.fontFamily }}>MuMuAINovel</span>
+              <span style={{ fontWeight: 600, fontSize: 16, fontFamily: token.fontFamily }}>墨笔AI</span>
             </div>
           }
           placement="left"
@@ -837,11 +822,6 @@ export default function ProjectList() {
               selectedKeys={[activeView]}
               style={{ borderRight: 0, paddingTop: 8 }}
               onClick={({ key }) => {
-                if (key === 'mumu-api') {
-                  window.open('https://api.mumuverse.space/register?aff=4NN8', '_blank', 'noopener,noreferrer');
-                  setDrawerVisible(false);
-                  return;
-                }
                 changeView(key as ProjectListView);
                 setDrawerVisible(false);
               }}
@@ -921,7 +901,6 @@ export default function ProjectList() {
             />
           )}
         
-        <ChangelogFloatingButton />
         </div>
       </div>
 

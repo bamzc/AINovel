@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, Spin, Alert, Button, Space, Switch, Drawer, message, Progress, theme } from 'antd';
 import {
   ArrowLeftOutlined,
@@ -13,6 +13,7 @@ import {
 import api from '../services/api';
 import AnnotatedText, { type MemoryAnnotation } from '../components/AnnotatedText';
 import MemorySidebar from '../components/MemorySidebar';
+import SharePreview from '../components/SharePreview';
 
 interface ChapterData {
   id: string;
@@ -63,6 +64,8 @@ interface NavigationData {
 const ChapterReader: React.FC = () => {
   const { chapterId } = useParams<{ chapterId: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isShareMode = searchParams.get('mode') === 'share';
 
   const { token } = theme.useToken();
 
@@ -82,8 +85,6 @@ const ChapterReader: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      // 并行加载章节内容、标注数据和导航信息
-      // 注意：api拦截器已经解析了response.data，所以直接返回数据对象
       const [chapterData, annotationsData, navigationData] = await Promise.all([
         api.get<unknown, ChapterData>(`/chapters/${chapterId}`).catch(err => {
           console.error('加载章节失败:', err);
@@ -92,18 +93,13 @@ const ChapterReader: React.FC = () => {
         api.get<unknown, AnnotationsData>(`/chapters/${chapterId}/annotations`).catch(err => {
           console.warn('加载标注失败:', err);
           return null;
-        }), // 如果没有分析数据也不报错
+        }),
         api.get<unknown, NavigationData>(`/chapters/${chapterId}/navigation`).catch(err => {
           console.warn('加载导航信息失败:', err);
           return null;
         }),
       ]);
 
-      console.log('章节数据:', chapterData);
-      console.log('标注数据:', annotationsData);
-      console.log('导航数据:', navigationData);
-
-      // 验证数据
       if (!chapterData || !chapterData.content) {
         throw new Error('章节数据无效：缺少内容');
       }
@@ -111,7 +107,6 @@ const ChapterReader: React.FC = () => {
       setChapter(chapterData);
       setNavigation(navigationData);
       
-      // 验证标注数据
       if (annotationsData) {
         const validAnnotations = annotationsData.annotations.filter(
           (a: MemoryAnnotation) => a.position >= 0 && a.position < chapterData.content.length
@@ -143,7 +138,6 @@ const ChapterReader: React.FC = () => {
 
   const handleAnnotationClick = (annotation: MemoryAnnotation) => {
     setActiveAnnotationId(annotation.id);
-    // 移动端显示侧边栏
     if (window.innerWidth < 768) {
       setSidebarVisible(true);
     }
@@ -173,10 +167,8 @@ const ChapterReader: React.FC = () => {
       setAnalysisProgress(0);
       message.loading({ content: '开始分析章节...', key: 'analyze', duration: 0 });
 
-      // 触发分析
       await api.post(`/chapters/${chapterId}/analyze`);
 
-      // 轮询分析状态
       const pollInterval = setInterval(async () => {
         try {
           const statusRes = await api.get(`/chapters/${chapterId}/analysis/status`);
@@ -189,7 +181,6 @@ const ChapterReader: React.FC = () => {
             setAnalyzing(false);
             message.success({ content: '分析完成！', key: 'analyze' });
             
-            // 重新加载标注数据
             const annotationsRes = await api.get(`/chapters/${chapterId}/annotations`);
             setAnnotationsData(annotationsRes.data);
           } else if (status === 'failed') {
@@ -203,9 +194,8 @@ const ChapterReader: React.FC = () => {
         } catch (err) {
           console.error('轮询分析状态失败:', err);
         }
-      }, 2000); // 每2秒轮询一次
+      }, 2000);
 
-      // 30秒超时
       setTimeout(() => {
         clearInterval(pollInterval);
         if (analyzing) {
@@ -249,6 +239,11 @@ const ChapterReader: React.FC = () => {
   }
 
   const hasAnnotations = annotationsData && annotationsData.annotations.length > 0;
+
+  // 分享模式：独立的截图分享工作台
+  if (isShareMode && chapter) {
+    return <SharePreview chapter={chapter} />;
+  }
 
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>

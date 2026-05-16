@@ -14,7 +14,7 @@ import {
   BankOutlined,
   EditOutlined,
   FundOutlined,
-  HeartOutlined,
+
   TrophyOutlined,
   BulbOutlined,
   CloudOutlined,
@@ -115,11 +115,6 @@ export default function ProjectDetail() {
 
   const menuItems = [
     {
-      key: 'sponsor',
-      icon: <HeartOutlined />,
-      label: <Link to={`/project/${projectId}/sponsor`}>赞助支持</Link>,
-    },
-    {
       type: 'group' as const,
       label: '创作管理',
       children: [
@@ -189,11 +184,6 @@ export default function ProjectDetail() {
   ];
 
   const menuItemsCollapsed = [
-    {
-      key: 'sponsor',
-      icon: <HeartOutlined />,
-      label: <Link to={`/project/${projectId}/sponsor`}>赞助支持</Link>,
-    },
     {
       key: 'world-setting',
       icon: <GlobalOutlined />,
@@ -265,9 +255,9 @@ export default function ProjectDetail() {
     if (path.includes('/chapters')) return 'chapters';
     if (path.includes('/writing-styles')) return 'writing-styles';
     if (path.includes('/prompt-workshop')) return 'prompt-workshop';
-    if (path.includes('/sponsor')) return 'sponsor';
+    if (path.includes('/sponsor')) return 'world-setting';
     // if (path.includes('/polish')) return 'polish';
-    return 'sponsor'; // 默认选中赞助支持
+    return 'world-setting'; // 默认选中世界设定
   }, [location.pathname]);
 
   if (loading || !currentProject) {
@@ -448,7 +438,7 @@ export default function ProjectDetail() {
                 }}>
                   <BookOutlined />
                 </div>
-                <span style={{ fontWeight: 600, fontSize: 16 }}>MuMuAINovel</span>
+                <span style={{ fontWeight: 600, fontSize: 16 }}>墨笔AI</span>
               </div>
             }
             placement="left"
@@ -544,7 +534,7 @@ export default function ProjectDetail() {
                         overflow: 'hidden',
                         textOverflow: 'ellipsis'
                       }}>
-                        MuMuAINovel
+                        墨笔AI
                       </span>
                     </div>
                     <Button

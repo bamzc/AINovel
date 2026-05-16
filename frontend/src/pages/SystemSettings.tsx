@@ -590,7 +590,7 @@ export default function SystemSettingsPage() {
                         </Col>
                         <Col xs={24} md={12}>
                           <Form.Item name="smtp_from_name" label="发件人名称" rules={[{ required: true, message: '请输入发件人名称' }]}>
-                            <Input placeholder="MuMuAINovel" />
+                            <Input placeholder="墨笔AI" />
                           </Form.Item>
                         </Col>
                       </Row>

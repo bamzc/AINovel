@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { List, Button, Modal, Form, Input, Select, message, Empty, Space, Badge, Tag, Card, InputNumber, Alert, Radio, Descriptions, Collapse, Popconfirm, Pagination, theme } from 'antd';
-import { EditOutlined, FileTextOutlined, ThunderboltOutlined, LockOutlined, DownloadOutlined, SettingOutlined, FundOutlined, SyncOutlined, CheckCircleOutlined, CloseCircleOutlined, RocketOutlined, StopOutlined, InfoCircleOutlined, CaretRightOutlined, DeleteOutlined, BookOutlined, FormOutlined, PlusOutlined, ReadOutlined } from '@ant-design/icons';
+import { EditOutlined, FileTextOutlined, ThunderboltOutlined, LockOutlined, DownloadOutlined, SettingOutlined, FundOutlined, SyncOutlined, CheckCircleOutlined, CloseCircleOutlined, RocketOutlined, StopOutlined, InfoCircleOutlined, CaretRightOutlined, DeleteOutlined, BookOutlined, FormOutlined, PlusOutlined, ReadOutlined, MobileOutlined } from '@ant-design/icons';
 import { useStore } from '../store';
 import { eventBus } from '../store/eventBus';
 import { useChapterSync } from '../store/hooks';
@@ -1883,6 +1883,11 @@ export default function Chapters() {
     setReaderVisible(true);
   };
 
+  // 打开分享预览（手机截图模式）
+  const handleOpenSharePreview = (chapter: Chapter) => {
+    window.open(`/chapters/${chapter.id}/reader?mode=share`, '_blank');
+  };
+
   // 阅读器切换章节
   const handleReaderChapterChange = async (chapterId: string) => {
     try {
@@ -2039,6 +2044,15 @@ export default function Chapters() {
                   </Button>,
                   <Button
                     type="text"
+                    icon={<MobileOutlined />}
+                    onClick={() => handleOpenSharePreview(item)}
+                    disabled={!item.content || item.content.trim() === ''}
+                    title={!item.content || item.content.trim() === '' ? '暂无内容' : '手机分享预览'}
+                  >
+                    分享
+                  </Button>,
+                  <Button
+                    type="text"
                     icon={<EditOutlined />}
                     onClick={() => handleOpenEditor(item.id)}
                   >
@@ -2122,6 +2136,14 @@ export default function Chapters() {
                         size="small"
                         disabled={!item.content || item.content.trim() === ''}
                         title={!item.content || item.content.trim() === '' ? '暂无内容' : '阅读'}
+                      />
+                      <Button
+                        type="text"
+                        icon={<MobileOutlined />}
+                        onClick={() => handleOpenSharePreview(item)}
+                        size="small"
+                        disabled={!item.content || item.content.trim() === ''}
+                        title={!item.content || item.content.trim() === '' ? '暂无内容' : '分享'}
                       />
                       <Button
                         type="text"
@@ -2222,6 +2244,15 @@ export default function Chapters() {
                           title={!item.content || item.content.trim() === '' ? '暂无内容' : '沉浸式阅读'}
                         >
                           阅读
+                        </Button>,
+                        <Button
+                          type="text"
+                          icon={<MobileOutlined />}
+                          onClick={() => handleOpenSharePreview(item)}
+                          disabled={!item.content || item.content.trim() === ''}
+                          title={!item.content || item.content.trim() === '' ? '暂无内容' : '手机分享预览'}
+                        >
+                          分享
                         </Button>,
                         <Button
                           type="text"
@@ -2347,6 +2378,14 @@ export default function Chapters() {
                               size="small"
                               disabled={!item.content || item.content.trim() === ''}
                               title={!item.content || item.content.trim() === '' ? '暂无内容' : '阅读'}
+                            />
+                            <Button
+                              type="text"
+                              icon={<MobileOutlined />}
+                              onClick={() => handleOpenSharePreview(item)}
+                              size="small"
+                              disabled={!item.content || item.content.trim() === ''}
+                              title={!item.content || item.content.trim() === '' ? '暂无内容' : '分享'}
                             />
                             <Button
                               type="text"
