@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import api from '../services/api';
 import AnnotatedText, { type MemoryAnnotation } from '../components/AnnotatedText';
 import MemorySidebar from '../components/MemorySidebar';
+import { useResponsive } from '../hooks/useResponsive';
 
 interface ChapterItem {
   id: string;
@@ -76,19 +77,10 @@ const ChapterAnalysis: React.FC = () => {
   const [chapterListVisible, setChapterListVisible] = useState(false);
   const [scrollToContentAnnotation, setScrollToContentAnnotation] = useState<string | undefined>();
   const [scrollToSidebarAnnotation, setScrollToSidebarAnnotation] = useState<string | undefined>();
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const { isMobile } = useResponsive();
   const { token } = theme.useToken();
 
   // 监听窗口大小变化
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   // 加载章节列表
   useEffect(() => {
     const loadChapters = async () => {

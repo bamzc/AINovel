@@ -29,6 +29,7 @@ import {
 } from '@ant-design/icons';
 import axios from 'axios';
 import { promptTemplateCardStyles, promptTemplateCardHoverHandlers, promptTemplateGridConfig } from '../components/CardStyles';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;
@@ -63,7 +64,7 @@ export default function PromptTemplates() {
   const [editorVisible, setEditorVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const isMobile = window.innerWidth <= 768;
+  const { isMobile } = useResponsive();
 
   // 加载模板数据
   const loadTemplates = async () => {

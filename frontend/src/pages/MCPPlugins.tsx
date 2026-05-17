@@ -33,12 +33,13 @@ import {
 } from '@ant-design/icons';
 import { mcpPluginApi, settingsApi } from '../services/api';
 import type { MCPPlugin, MCPTool } from '../types';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Paragraph, Text, Title } = Typography;
 const { TextArea } = Input;
 
 export default function MCPPluginsPage() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { isMobile } = useResponsive();
   const [form] = Form.useForm();
   const { token } = theme.useToken();
   const alphaColor = (color: string, alpha: number) => `color-mix(in srgb, ${color} ${(alpha * 100).toFixed(0)}%, transparent)`;
@@ -67,13 +68,6 @@ export default function MCPPluginsPage() {
   };
 
   // 响应式监听窗口大小变化
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   const [modal, contextHolder] = Modal.useModal();
   const [loading, setLoading] = useState(false);
   const [plugins, setPlugins] = useState<MCPPlugin[]>([]);

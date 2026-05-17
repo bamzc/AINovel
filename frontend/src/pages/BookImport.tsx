@@ -26,6 +26,7 @@ import {
 import type { UploadFile } from 'antd/es/upload/interface';
 import { InboxOutlined, PlayCircleOutlined, ReloadOutlined, StopOutlined, WarningOutlined, RedoOutlined } from '@ant-design/icons';
 import { bookImportApi } from '../services/api';
+import { useResponsive } from '../hooks/useResponsive';
 import type {
   BookImportApplyPayload,
   BookImportExtractMode,
@@ -112,7 +113,7 @@ function isNotFoundError(error: unknown): boolean {
 export default function BookImport() {
   const navigate = useNavigate();
   const { token } = theme.useToken();
-  const isMobile = window.innerWidth <= 768;
+  const { isMobile } = useResponsive();
   const [file, setFile] = useState<File | null>(null);
   const [extractMode, setExtractMode] = useState<BookImportExtractMode>('tail');
   const [tailChapterCount, setTailChapterCount] = useState(10);

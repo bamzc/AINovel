@@ -37,6 +37,7 @@ import {
 import { adminApi } from '../services/api';
 import type { User } from '../types';
 import UserMenu from '../components/UserMenu';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Title, Text } = Typography;
 
@@ -302,7 +303,7 @@ export default function UserManagement() {
     }
   };
 
-  const isMobile = window.innerWidth <= 768;
+  const { isMobile } = useResponsive();
 
   // 表格列定义
   const columns = [
@@ -510,7 +511,7 @@ export default function UserManagement() {
 
   return (
     <div style={{
-      height: '100vh',
+      height: '100dvh',
       background: `linear-gradient(180deg, ${token.colorBgLayout} 0%, ${alphaColor(token.colorPrimary, 0.08)} 100%)`,
       padding: isMobile ? '20px 16px' : '40px 24px',
       display: 'flex',

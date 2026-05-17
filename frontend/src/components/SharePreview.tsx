@@ -263,21 +263,21 @@ const SharePreview: React.FC<SharePreviewProps> = ({ chapter }) => {
         <Select
           size="small"
           placeholder="选择设备型号"
-          value={config.cardWidth}
+          value={[320, 350, 360, 375, 390, 412, 430, 744, 820, 1024].includes(config.cardWidth) ? config.cardWidth : undefined}
           onChange={v => updateConfig({ cardWidth: v })}
+          allowClear
           style={{ width: '100%', marginBottom: 10 }}
           options={[
-            { label: '📱 iPhone SE / 5', value: 320 },
-            { label: '📱 iPhone 6/7/8', value: 375 },
-            { label: '📱 iPhone 12/13/14', value: 390 },
-            { label: '📱 iPhone 14 Pro Max', value: 430 },
-            { label: '📱 Samsung Galaxy S24', value: 360 },
-            { label: '📱 Pixel 7', value: 412 },
-            { label: '📱 小红书卡片', value: 350 },
-            { label: '📱 微信朋友圈', value: 375 },
-            { label: '📲 iPad Mini', value: 744 },
-            { label: '📲 iPad Air/Pro', value: 820 },
-            { label: '🖥️ 小平板横屏', value: 1024 },
+            { label: '📱 iPhone SE / 5 (320)', value: 320 },
+            { label: '📱 小红书卡片 (350)', value: 350 },
+            { label: '📱 Samsung Galaxy S24 (360)', value: 360 },
+            { label: '📱 iPhone 6/7/8 / 朋友圈 (375)', value: 375 },
+            { label: '📱 iPhone 12/13/14 (390)', value: 390 },
+            { label: '📱 Pixel 7 (412)', value: 412 },
+            { label: '📱 iPhone 14 Pro Max (430)', value: 430 },
+            { label: '📲 iPad Mini (744)', value: 744 },
+            { label: '📲 iPad Air/Pro (820)', value: 820 },
+            { label: '🖥️ 小平板横屏 (1024)', value: 1024 },
           ]}
         />
         {/* 自定义宽度 */}

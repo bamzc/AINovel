@@ -27,11 +27,9 @@ import ThemeSwitch from '../components/ThemeSwitch';
 import { useThemeMode } from '../theme/useThemeMode';
 import { getStoredSidebarCollapsed, setStoredSidebarCollapsed } from '../utils/sidebarState';
 import FloatingTaskPanel from '../components/FloatingTaskPanel';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Header, Sider, Content } = Layout;
-
-// 判断是否为移动端
-const isMobile = () => window.innerWidth <= 768;
 
 export default function ProjectDetail() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -39,7 +37,7 @@ export default function ProjectDetail() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState<boolean>(() => getStoredSidebarCollapsed());
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [mobile, setMobile] = useState(isMobile());
+  const { isMobile: mobile } = useResponsive();
   const { token } = theme.useToken();
   const alphaColor = (color: string, alpha: number) => `color-mix(in srgb, ${color} ${(alpha * 100).toFixed(0)}%, transparent)`;
   const { mode, resolvedMode, setMode } = useThemeMode();
@@ -49,17 +47,12 @@ export default function ProjectDetail() {
   };
   const collapsedThemeIcon = mode === 'light' ? <BulbOutlined /> : mode === 'dark' ? <MoonOutlined /> : <CloudOutlined />;
 
-  // 监听窗口大小变化
+  // 桌面端切换时关闭移动端抽屉
   useEffect(() => {
-    const handleResize = () => {
-      setMobile(isMobile());
-      if (!isMobile()) {
-        setDrawerVisible(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    if (!mobile) {
+      setDrawerVisible(false);
+    }
+  }, [mobile]);
 
   useEffect(() => {
     setStoredSidebarCollapsed(collapsed);
@@ -262,7 +255,7 @@ export default function ProjectDetail() {
 
   if (loading || !currentProject) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100dvh' }}>
         <Spin size="large" />
       </div>
     );
@@ -290,7 +283,7 @@ export default function ProjectDetail() {
   );
 
   return (
-    <Layout style={{ minHeight: '100vh', height: '100vh', overflow: 'hidden' }}>
+    <Layout style={{ minHeight: '100dvh', height: '100dvh', overflow: 'hidden' }}>
       <Header style={{
         background: token.colorPrimary,
         padding: mobile ? '0 12px' : '0 24px',
@@ -471,7 +464,7 @@ export default function ProjectDetail() {
               bottom: 0,
               overflow: 'hidden',
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              height: '100vh',
+              height: '100dvh',
               background: token.colorBgContainer,
               borderRight: `1px solid ${token.colorBorderSecondary}`,
               boxShadow: `4px 0 16px ${alphaColor(token.colorText, 0.06)}`,

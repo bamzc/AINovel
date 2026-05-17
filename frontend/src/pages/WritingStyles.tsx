@@ -25,6 +25,7 @@ import {
 import { useStore } from '../store';
 import { writingStyleApi } from '../services/api';
 import type { WritingStyle, WritingStyleCreate, WritingStyleUpdate } from '../types';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { TextArea } = Input;
 const { Text, Paragraph } = Typography;
@@ -41,7 +42,7 @@ export default function WritingStyles() {
 
   const { token } = theme.useToken();
 
-  const isMobile = window.innerWidth <= 768;
+  const { isMobile } = useResponsive();
   
   // 卡片网格配置
   const gridConfig = {

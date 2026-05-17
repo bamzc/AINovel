@@ -8,6 +8,7 @@ import { useOutlineSync } from '../store/hooks';
 import { generateOutlineBackground } from '../services/backgroundTaskService';
 import { outlineApi, chapterApi, projectApi, characterApi } from '../services/api';
 import type { ApiError, Character } from '../types';
+import { useResponsive } from '../hooks/useResponsive';
 
 // 大纲生成请求数据类型
 interface OutlineGenerateRequestData {
@@ -114,7 +115,7 @@ export default function Outline() {
   const [modalApi, contextHolder] = Modal.useModal();
   const [batchExpansionForm] = Form.useForm();
   const [manualCreateForm] = Form.useForm();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { isMobile } = useResponsive();
   const [isExpanding, setIsExpanding] = useState(false);
   const [projectCharacters, setProjectCharacters] = useState<Array<{ label: string; value: string }>>([]);
   const { token } = theme.useToken();
@@ -126,16 +127,6 @@ export default function Outline() {
 
   // ✅ 新增：记录场景区域的展开/折叠状态
   const [scenesExpandStatus, setScenesExpandStatus] = useState<Record<string, boolean>>({});
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   // 大纲查询与分页状态
   const [outlineSearchKeyword, setOutlineSearchKeyword] = useState('');
   const [outlinePage, setOutlinePage] = useState(1);

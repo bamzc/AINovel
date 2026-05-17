@@ -246,7 +246,7 @@ const ChapterReader: React.FC = () => {
   }
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: '100dvh', display: 'flex', flexDirection: 'column' }}>
       {/* 顶部工具栏 */}
       <Card
         size="small"

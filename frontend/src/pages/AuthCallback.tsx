@@ -93,7 +93,7 @@ export default function AuthCallback() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
+        minHeight: '100dvh',
         background: `linear-gradient(135deg, ${token.colorPrimary} 0%, ${token.colorPrimaryHover} 100%)`,
       }}>
         <div style={{ textAlign: 'center' }}>
@@ -112,7 +112,7 @@ export default function AuthCallback() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
+        minHeight: '100dvh',
         background: `linear-gradient(135deg, ${token.colorPrimary} 0%, ${token.colorPrimaryHover} 100%)`,
       }}>
         <Result
@@ -302,7 +302,7 @@ export default function AuthCallback() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: '100vh',
+        minHeight: '100dvh',
         background: `linear-gradient(135deg, ${token.colorPrimary} 0%, ${token.colorPrimaryHover} 100%)`,
       }}>
         <Result

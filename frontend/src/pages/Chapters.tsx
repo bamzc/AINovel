@@ -14,6 +14,7 @@ import { SSELoadingOverlay } from '../components/SSELoadingOverlay';
 import ChapterReader from '../components/ChapterReader';
 import PartialRegenerateToolbar from '../components/PartialRegenerateToolbar';
 import PartialRegenerateModal from '../components/PartialRegenerateModal';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { TextArea } = Input;
 
@@ -57,7 +58,7 @@ export default function Chapters() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form] = Form.useForm();
   const [editorForm] = Form.useForm();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { isMobile } = useResponsive();
   const contentTextAreaRef = useRef<TextAreaRef>(null);
   const [writingStyles, setWritingStyles] = useState<WritingStyle[]>([]);
   const [selectedStyleId, setSelectedStyleId] = useState<number | undefined>();
@@ -114,16 +115,6 @@ export default function Chapters() {
     estimated_time_minutes?: number;
   } | null>(null);
   const batchPollingIntervalRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   // 处理文本选中 - 检测选中文本并显示浮动工具栏
   const handleTextSelection = useCallback(() => {
     // 只在编辑器打开时处理选中

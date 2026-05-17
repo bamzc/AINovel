@@ -48,6 +48,7 @@ import type {
   User,
 } from '../types';
 import { PROMPT_CATEGORIES } from '../types';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { TextArea } = Input;
 const { Text, Paragraph } = Typography;
@@ -120,7 +121,7 @@ export default function PromptWorkshop() {
   // 当前活动的 Tab
   const [activeTab, setActiveTab] = useState<string>('browse');
   
-  const isMobile = window.innerWidth <= 768;
+  const { isMobile } = useResponsive();
   const { token } = theme.useToken();
   
   // 判断是否为服务端管理员

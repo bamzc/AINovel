@@ -731,7 +731,7 @@ export default function Login() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: '100vh',
+          minHeight: '100dvh',
           background: token.colorBgLayout,
         }}
       >
@@ -748,7 +748,7 @@ export default function Login() {
         onDoNotShowToday={handleDoNotShowToday}
         onNeverShow={handleNeverShow}
       />
-      <Layout style={{ minHeight: '100vh', background: token.colorBgLayout }}>
+      <Layout style={{ minHeight: '100dvh', background: token.colorBgLayout }}>
         <div
           style={{
             position: 'fixed',
@@ -764,7 +764,7 @@ export default function Login() {
         >
           <ThemeSwitch size="small" />
         </div>
-        <Row style={{ minHeight: '100vh' }}>
+        <Row style={{ minHeight: '100dvh' }}>
           <Col xs={0} lg={11}>
             <section
               style={{
@@ -913,7 +913,7 @@ export default function Login() {
           <Col xs={24} lg={13}>
             <section
               style={{
-                minHeight: '100vh',
+                minHeight: '100dvh',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

@@ -20,6 +20,7 @@ import BookshelfPage from './BookshelfPage';
 import { getStoredSidebarCollapsed, setStoredSidebarCollapsed } from '../utils/sidebarState';
 import AnnouncementTimelineModal from '../components/AnnouncementTimelineModal';
 import { useAnnouncements } from '../hooks/useAnnouncements';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Text } = Typography;
 
@@ -149,7 +150,7 @@ export default function ProjectList() {
   }, [collapsed]);
 
   const handleDelete = (id: string) => {
-    const isMobile = window.innerWidth <= 768;
+    const { isMobile } = useResponsive();
     modal.confirm({
       title: '确认删除',
       content: '删除项目将同时删除所有相关数据，此操作不可恢复。确定要删除吗？',
@@ -489,7 +490,7 @@ export default function ProjectList() {
 
   return (
     <div style={{
-      height: '100vh',
+      height: '100dvh',
       display: 'flex',
       flexDirection: 'column',
       background: token.colorBgLayout,
@@ -509,7 +510,7 @@ export default function ProjectList() {
           left: 0,
           top: 0,
           bottom: 0,
-          height: '100vh',
+          height: '100dvh',
           overflow: 'hidden',
           transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           boxShadow: `4px 0 16px ${alphaColor(token.colorText, 0.06)}`,

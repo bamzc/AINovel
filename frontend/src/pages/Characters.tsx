@@ -10,6 +10,7 @@ import type { Character, ApiError } from '../types';
 import { characterApi } from '../services/api';
 import { SSEPostClient } from '../utils/sseClient';
 import api from '../services/api';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -619,7 +620,7 @@ export default function Characters() {
 
   const displayList = getDisplayList();
 
-  const isMobile = window.innerWidth <= 768;
+  const { isMobile } = useResponsive();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>

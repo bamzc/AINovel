@@ -5,6 +5,7 @@ import { PlusOutlined, UserOutlined, EditOutlined, DeleteOutlined, UnorderedList
 import { useStore } from '../store';
 import { useCharacterSync } from '../store/hooks';
 import axios from 'axios';
+import { useResponsive } from '../hooks/useResponsive';
 
 interface Organization {
   id: string;
@@ -55,20 +56,10 @@ export default function Organizations() {
   const [form] = Form.useForm();
   const [editMemberForm] = Form.useForm();
   const [editOrgForm] = Form.useForm();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { isMobile } = useResponsive();
   const [modal, contextHolder] = Modal.useModal();
   const [orgListVisible, setOrgListVisible] = useState(false);
   const { token } = theme.useToken();
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const loadOrganizations = useCallback(async () => {
     setLoading(true);
     try {

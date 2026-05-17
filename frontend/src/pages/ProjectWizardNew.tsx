@@ -9,6 +9,7 @@ import {
 } from '@ant-design/icons';
 import { AIProjectGenerator, type GenerationConfig } from '../components/AIProjectGenerator';
 import type { WizardBasicInfo } from '../types';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { TextArea } = Input;
 const { Title, Paragraph } = Typography;
@@ -17,22 +18,13 @@ export default function ProjectWizardNew() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [form] = Form.useForm();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { isMobile } = useResponsive();
   const { token } = theme.useToken();
 
   // 状态管理
   const [currentStep, setCurrentStep] = useState<'form' | 'generating'>('form');
   const [generationConfig, setGenerationConfig] = useState<GenerationConfig | null>(null);
   const [resumeProjectId, setResumeProjectId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   // 检查URL参数,如果有project_id则恢复生成
   useEffect(() => {
     const projectId = searchParams.get('project_id');

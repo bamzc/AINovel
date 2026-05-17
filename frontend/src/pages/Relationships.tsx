@@ -4,6 +4,7 @@ import { Card, Table, Tag, Button, Space, message, Modal, Form, Select, Slider, 
 import { PlusOutlined, ApartmentOutlined, UserOutlined, EditOutlined } from '@ant-design/icons';
 import { useStore } from '../store';
 import axios from 'axios';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { TextArea } = Input;
 
@@ -46,19 +47,9 @@ export default function Relationships() {
   const [form] = Form.useForm();
   const [modal, contextHolder] = Modal.useModal();
   const { token } = theme.useToken();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const { isMobile } = useResponsive();
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   useEffect(() => {
     if (projectId) {
       loadData();
