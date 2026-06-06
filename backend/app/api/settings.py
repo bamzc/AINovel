@@ -23,7 +23,7 @@ from app.schemas.settings import (
     SystemSMTPSettingsResponse, SystemSMTPSettingsUpdate, SMTPTestRequest
 )
 from app.user_manager import User
-from app.logger import get_logger
+from app.logger import get_logger, safe_preview
 from app.config import settings as app_settings, PROJECT_ROOT
 from app.services.ai_service import AIService, create_user_ai_service, create_user_ai_service_with_mcp, normalize_provider
 from app.services.email_service import email_service
@@ -716,7 +716,7 @@ async def get_available_models(
                 raise HTTPException(status_code=400, detail=f"不支持的提供商: {provider}")
             
     except httpx.HTTPStatusError as e:
-        logger.error(f"获取模型列表失败 (HTTP {e.response.status_code}): {e.response.text}")
+        logger.error(f"获取模型列表失败 (HTTP {e.response.status_code}): {safe_preview(e.response.text, 500)}")
         if e.response.status_code == 404:
             raise HTTPException(
                 status_code=400,
@@ -1037,7 +1037,7 @@ async def test_api_connection(data: ApiTestRequest):
         
         # 安全地处理响应内容（确保是字符串）
         response_str = str(response) if response else 'N/A'
-        logger.info(f"  - 响应内容: {response_str[:100]}")
+        logger.info(f"  - 响应内容长度: {len(response_str)}")
         
         return {
             "success": True,
@@ -1055,6 +1055,23 @@ async def test_api_connection(data: ApiTestRequest):
             }
         }
         
+    except json.JSONDecodeError as e:
+        # 上游接口返回了 HTTP 成功状态，但响应体不是合法 JSON。
+        error_msg = str(e)
+        logger.error(f"❌ API 响应解析失败: {error_msg}")
+        logger.error(f"  - 错误类型: {type(e).__name__}")
+        return {
+            "success": False,
+            "message": "API 响应解析失败",
+            "error": error_msg,
+            "error_type": "JSONDecodeError",
+            "suggestions": [
+                "上游服务可能返回了空响应、HTML 错误页或非 OpenAI 兼容 JSON",
+                "请查看后端日志中的 AI HTTP 响应 JSON 解析失败，确认 status、content-type 和 body_preview",
+                "请确认 API Base URL 是否指向正确的 OpenAI 兼容 /v1 接口"
+            ]
+        }
+
     except ValueError as e:
         # 配置错误
         error_msg = str(e)
